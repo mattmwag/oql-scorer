@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\FixtureController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +21,7 @@ Route::get('/', function () {
 });
 
 Route::resource('teams', TeamController::class);
+
+Route::resource('players', PlayerController::class);
+
+Route::resource('fixtures', FixtureController::class);

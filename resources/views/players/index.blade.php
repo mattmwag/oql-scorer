@@ -1,4 +1,4 @@
-@extends('teams.layout')
+@extends('players.layout')
 
 @section('content')
     <div class="row">
@@ -7,7 +7,7 @@
                 <h2>OQL Buzzer Quiz App</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('teams.create') }}"> Create New Team</a>
+                <a class="btn btn-success" href="{{ route('players.create') }}"> Add New Player</a>
             </div>
         </div>
     </div>
@@ -22,20 +22,20 @@
         <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Group</th>
+            <th>Team</th>
             <th width="280px">Action</th>
         </tr>
-        @foreach ($teams as $team)
+        @foreach ($players as $player)
             <tr>
                 <td>{{ ++$i }}</td>
-                <td>{{ $team->name }}</td>
-                <td>{{ $team->group }}</td>
+                <td>{{ $player->name }}</td>
+                <td>{{ $player->team->name }}</td>
                 <td>
-                    <form action="{{ route('teams.destroy',$team->id) }}" method="POST">
+                    <form action="{{ route('players.destroy',$player->id) }}" method="POST">
 
-                        <a class="btn btn-info" href="{{ route('teams.show',$team->id) }}">Show</a>
+                        <a class="btn btn-info" href="{{ route('players.show',$player->id) }}">Show</a>
 
-                        <a class="btn btn-primary" href="{{ route('teams.edit',$team->id) }}">Edit</a>
+                        <a class="btn btn-primary" href="{{ route('players.edit',$player->id) }}">Edit</a>
 
                         @csrf
                         @method('DELETE')
@@ -47,6 +47,6 @@
         @endforeach
     </table>
 
-    {!! $teams->links() !!}
+    {!! $players->links() !!}
 
 @endsection

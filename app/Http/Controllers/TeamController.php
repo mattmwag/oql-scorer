@@ -14,7 +14,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = Team::latest()->paginate(50);
+        $teams = Team::query()
+            ->orderBy('group')
+            ->orderBy('name')
+            ->paginate(50);
 
         return view('teams.index', compact('teams'))
             ->with('i', (request()->input('page', 1) - 1) *50);
@@ -81,6 +84,7 @@ class TeamController extends Controller
     {
         $request->validate([
            'name' => 'required',
+           'group' => 'required',
         ]);
 
         $team->update($request->all());

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fixture;
 use App\Models\Player;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
-class PlayerController extends Controller
+class FixtureController extends Controller
 {
+    const GROUP_COUNT = 5;
+
     /**
      * Display a listing of the resource.
      *
@@ -15,9 +18,9 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        $players = Player::latest()->paginate(50);
+        $fixtures = Fixture::latest()->orderBy('teamOne', 'desc')->paginate(50);
 
-        return view('players.index', compact('players'))
+        return view('fixtures.index', compact('fixtures'))
             ->with('i', (request()->input('page', 1) - 1) *50);
     }
 
@@ -28,9 +31,45 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        $teams = Team::all();
+        $round = Fixture::max('round') + 1;
 
-        return view('players.create', compact('teams'));
+        $bye = Team::where('name', 'Bye')->first();
+
+        for ($i = 1; $i <= self::GROUP_COUNT; $i++) {
+            $teams = Team::inRandomOrder()->where('group', $i)->get();
+            [$A, $B, $C, $D, $E] = $teams;
+            $fixture = new Fixture();
+
+            $this->makeFixture($A, $B, 1);
+            $this->makeFixture($C, $D, 1);
+            $this->makeFixture($E, $bye, 1);
+
+            $this->makeFixture($B, $C, 2);
+            $this->makeFixture($D, $E, 2);
+            $this->makeFixture($A, $bye, 2);
+
+            $this->makeFixture($C, $E, 3);
+            $this->makeFixture($A, $D, 3);
+            $this->makeFixture($B, $bye, 3);
+
+            $this->makeFixture($A, $C, 4);
+            $this->makeFixture($B, $E, 4);
+            $this->makeFixture($D, $bye, 4);
+
+            $this->makeFixture($A, $E, 5);
+            $this->makeFixture($B, $D, 5);
+            $this->makeFixture($C, $bye, 5);
+         }
+
+        return redirect()->route('fixtures.index');
+    }
+
+    private function makeFixture($A, $B, $round) {
+        $fixture = new Fixture();
+        $fixture->round = $round;
+        $fixture->teamOne()->associate($A);
+        $fixture->teamTwo()->associate($B);
+        $fixture->save();
     }
 
     /**
@@ -54,12 +93,12 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Player  $player
+     * @param  \App\Models\Fixture  $fixture
      * @return \Illuminate\Http\Response
      */
-    public function show(Player $player)
+    public function show(Fixture $fixture)
     {
-        return view('players.show', compact('player'));
+        return view('fixtures.show', compact('fixture'));
     }
 
     /**
@@ -68,11 +107,13 @@ class PlayerController extends Controller
      * @param  \App\Models\Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function edit(Player $player)
+    public function edit(Fixture $fixture)
     {
-        $teams = Team::all();
+        $team1 = $fixture->teamOne()->first();
+        $team2 = $fixture->teamTwo()->first();
+        $fid = $fixture->getId();
 
-        return view('players.edit', compact('player', 'teams'));
+        return view('fixtures.edit', compact('team1', 'team2', 'fid'));
     }
 
     /**
