@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::update('teams', function (Blueprint $table) {
+        Schema::table('teams', function (Blueprint $table) {
             $table->unsignedSmallInteger('group')->change();
         });
     }
