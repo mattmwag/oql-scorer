@@ -18,8 +18,6 @@ return new class extends Migration
             $table->unsignedTinyInteger('round');
             $table->unsignedSmallInteger('team_one_id');
             $table->unsignedSmallInteger('team_two_id')->nullable();
-            $table->foreign('team_one_id')->references('id')->on('teams');
-            $table->foreign('team_two_id')->references('id')->on('teams');
             $table->unsignedSmallInteger('team_one_score')->nullable();
             $table->unsignedSmallInteger('team_two_score')->nullable();
             $table->unsignedSmallInteger('t1p1_id')->nullable();
