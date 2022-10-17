@@ -26,9 +26,9 @@ class TeamSeeder extends Seeder
             ]);
 
         $bye = new Team();
-        $bye->id = 9999;
+        $bye->id = 999;
         $bye->name = 'Bye';
-        $bye->group = 9999;
+        $bye->group = 999;
         $bye->save();
     }
 }
