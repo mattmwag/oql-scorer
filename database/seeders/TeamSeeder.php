@@ -15,14 +15,12 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
+        for ($i = 1; $i < 10; $i++)
         Team::factory()
-            ->count(45)
+            ->count(5)
             ->hasPlayers(5)
-            ->create();
-
-        Team::query()
-            ->update([
-                'group' => DB::raw("(`id`-1)/5+1")
+            ->make([
+                'group' => $i
             ]);
 
         $bye = new Team();
