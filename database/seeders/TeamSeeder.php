@@ -15,11 +15,13 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('teams')->truncate();
+
         for ($i = 1; $i < 10; $i++)
         Team::factory()
             ->count(5)
             ->hasPlayers(5)
-            ->make([
+            ->create([
                 'group' => $i
             ]);
 
