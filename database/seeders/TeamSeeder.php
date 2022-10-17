@@ -15,8 +15,6 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('teams')->truncate();
-
         for ($i = 1; $i < 10; $i++)
         Team::factory()
             ->count(5)

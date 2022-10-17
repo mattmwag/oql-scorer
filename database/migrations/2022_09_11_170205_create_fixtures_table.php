@@ -36,14 +36,14 @@ return new class extends Migration
             $table->unsignedSmallInteger('t2p2_score')->nullable();
             $table->unsignedSmallInteger('t2p3_score')->nullable();
             $table->unsignedSmallInteger('t2p4_score')->nullable();
-            $table->unsignedSmallInteger('t1p1_negs')->nullable();
-            $table->unsignedSmallInteger('t1p2_negs')->nullable();
-            $table->unsignedSmallInteger('t1p3_negs')->nullable();
-            $table->unsignedSmallInteger('t1p4_negs')->nullable();
-            $table->unsignedSmallInteger('t2p1_negs')->nullable();
-            $table->unsignedSmallInteger('t2p2_negs')->nullable();
-            $table->unsignedSmallInteger('t2p3_negs')->nullable();
-            $table->unsignedSmallInteger('t2p4_negs')->nullable();
+            $table->smallInteger('t1p1_negs')->nullable();
+            $table->smallInteger('t1p2_negs')->nullable();
+            $table->smallInteger('t1p3_negs')->nullable();
+            $table->smallInteger('t1p4_negs')->nullable();
+            $table->smallInteger('t2p1_negs')->nullable();
+            $table->smallInteger('t2p2_negs')->nullable();
+            $table->smallInteger('t2p3_negs')->nullable();
+            $table->smallInteger('t2p4_negs')->nullable();
             $table->timestamps();
         });
     }
