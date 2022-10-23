@@ -44,8 +44,13 @@ class Scorer extends Component
     public $t1bonuses = 0;
     public $t2bonuses = 0;
 
+    public $count = 0;
+    public $phase = "TOSSUP 1";
+    public $history = [];
+
     public function increment($team, $player, $points)
     {
+        $incCount = true;
         $method = $team == 1 ? "t1" : "t2";
         if ($player == 0)  {
             $method .= "bonuses";
@@ -54,8 +59,37 @@ class Scorer extends Component
         }
         if ($points < 0) {
             $method .= "neg";
+            $incCount = false;
         }
         $this->$method += $points;
+        array_push($this->history, [$method, $points]);
+        if ($incCount) { $this->count++; }
+
+        switch ($this->count % 4) {
+            case 0:
+                $this->phase = "TOSSUP " . $this->count / 4 + 1;
+                break;
+            default:
+                $this->phase = "TOSSUP " . floor($this->count / 4 + 1) . " BONUS " . $this->count % 4;
+        }
+    }
+
+    public function next()
+    {
+        array_push($this->history, ["t1bonuses", 0]);
+        $count++;
+    }
+
+    public function undo()
+    {
+        if (empty($this->history)) {
+            return;
+        }
+
+        $last = array_pop($this->history);
+        [$method, $points] = $last;
+        $this->$method -= $points;
+        $this->count--;
     }
 
     public function save()
@@ -87,6 +121,7 @@ class Scorer extends Component
         $fixture->t2p2_negs = $this->t2p2neg;
         $fixture->t2p3_negs = $this->t2p3neg;
         $fixture->t2p4_negs = $this->t2p4neg;
+        $fixture->history = serialize($this->history);
         $fixture->save();
 
         return redirect()->route('fixtures.index')
