@@ -77,7 +77,7 @@ class Scorer extends Component
     public function next()
     {
         array_push($this->history, ["t1bonuses", 0]);
-        $count++;
+        $this->count++;
     }
 
     public function undo()
@@ -94,6 +94,22 @@ class Scorer extends Component
 
     public function save()
     {
+        $t1total =  $this->t1bonuses + $this->t1p1 + $this->t1p2 + $this->t1p3 + $this->t1p4 +
+            $this->t1p1neg + $this->t1p2neg + $this->t1p3neg + $this->t1p4neg;
+        $t2total =  $this->t2bonuses + $this->t2p1 + $this->t2p2 + $this->t2p3 + $this->t2p4 +
+            $this->t2p1neg + $this->t2p2neg + $this->t2p3neg + $this->t2p4neg;
+        if ($t1total == $t2total) {
+            $t1result = $t2result = 2;
+        }
+        if ($t1total > $t2total) {
+            $t1result = 4;
+            $t2result = $t1total - $t2total <= 50 ? 1 : 0;
+        }
+        if ($t2total > $t1total) {
+            $t2result = 4;
+            $t1result = $t2total - $t1total <= 50 ? 1 : 0;
+        }
+
         $fixture = Fixture::find($this->fid);
         $fixture->team_one_score = $this->t1bonuses;
         $fixture->team_two_score = $this->t2bonuses;
@@ -122,6 +138,8 @@ class Scorer extends Component
         $fixture->t2p3_negs = $this->t2p3neg;
         $fixture->t2p4_negs = $this->t2p4neg;
         $fixture->history = serialize($this->history);
+        $fixture->t1result = $t1result;
+        $fixture->t2result = $t2result;
         $fixture->save();
 
         return redirect()->route('fixtures.index')

@@ -18,7 +18,7 @@ class FixtureController extends Controller
      */
     public function index()
     {
-        $fixtures = Fixture::latest()->orderBy('team_one_id', 'asc')->paginate(50);
+        $fixtures = Fixture::orderBy('round')->paginate(50);
 
         return view('fixtures.index', compact('fixtures'))
             ->with('i', (request()->input('page', 1) - 1) *50);

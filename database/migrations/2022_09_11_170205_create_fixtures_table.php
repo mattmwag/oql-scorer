@@ -45,6 +45,8 @@ return new class extends Migration
             $table->smallInteger('t2p3_negs')->nullable();
             $table->smallInteger('t2p4_negs')->nullable();
             $table->text('history')->nullable();
+            $table->unsignedTinyInteger('t1result')->nullable();
+            $table->unsignedTinyInteger('t2result')->nullable();
             $table->timestamps();
         });
     }

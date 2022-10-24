@@ -20,8 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('teams/rankings', 'App\Http\Controllers\TeamController@rankings');
+
 Route::resource('teams', TeamController::class);
 
 Route::resource('players', PlayerController::class);
 
 Route::resource('fixtures', FixtureController::class);
+

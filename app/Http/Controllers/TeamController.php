@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Models\Fixture;
 use Illuminate\Http\Request;
+use DB;
 
 class TeamController extends Controller
 {
@@ -105,5 +107,61 @@ class TeamController extends Controller
 
         return redirect()->route('teams.index')
             ->with('success', 'Team deleted successfully');
+    }
+
+    public function rankings()
+    {
+        $teams = Team::all();
+        foreach ($teams as $team) {
+            $f1 = Fixture::where('team_one_id', $team->id)->sum('t1result');
+            $f2 = Fixture::where('team_two_id', $team->id)->sum('t2result');
+            $team->leaguePoints = $f1 + $f2;
+            $t1 = Fixture::where('team_one_id', $team->id)->sum('team_one_score');
+            $t2 = Fixture::where('team_two_id', $team->id)->sum('team_two_score');
+            $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score');
+            $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score');
+            $cb = Fixture::where('team_one_id', $team->id)->sum('t1p1_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p2_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p3_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p4_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p1_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p2_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p3_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p4_score');
+            $negs = Fixture::where('team_one_id', $team->id)->sum('t1p1_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p2_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p3_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p4_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p1_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p2_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p3_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p4_negs');
+            $t1c = Fixture::where('team_one_id', '=', $team->id)
+                ->where(function ($query) {
+                    $query->where('t1result', '>', 0)
+                        ->orWhere('t2result', '>', 0);
+                })->count();
+            $t2c = Fixture::where('team_two_id', '=', $team->id)
+                ->where(function ($query) {
+                    $query->where('t1result', '>', 0)
+                        ->orWhere('t2result', '>', 0);
+                })->count();
+            $team->pointsPerStarter = ($t1c + $t2c > 0) ?
+                ($t1 + $t2) / ($t1c + $t2c) / 20        : 0;
+            $team->pointsConcededPerStarter = ($t1c + $t2c > 0) ?
+                ($t1a + $t2a) / ($t1c + $t2c) / 20        : 0;
+            $team->correctBuzzes = $cb / 20;
+            $team->negs = $negs / -10;
+        }
+
+        $teams = $teams->sortBy([
+            ['leaguePoints', 'desc'],
+            ['pointsPerStarter', 'desc'],
+            ['pointsConcededPerStarter', 'asc'],
+            ['correctBuzzes', 'desc'],
+            ['negs', 'asc'],
+        ]);
+
+        return view('teams.rankings', compact('teams'));
     }
 }
