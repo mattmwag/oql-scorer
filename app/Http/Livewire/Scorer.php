@@ -48,8 +48,14 @@ class Scorer extends Component
     public $phase = "TOSSUP 1";
     public $history = [];
 
+    public $control = null;
+
     public function increment($team, $player, $points)
     {
+        if ($points == 20) {
+            $this->control = $team;
+        }
+
         $incCount = true;
         $method = $team == 1 ? "t1" : "t2";
         if ($player == 0)  {
