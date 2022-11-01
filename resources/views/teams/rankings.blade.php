@@ -21,6 +21,7 @@
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
+            <th>Group</th>
             <th>LeaguePoints</th>
             <th>PointsPerStarter</th>
             <th>PointsConcededPerStarter</th>
@@ -28,8 +29,9 @@
             <th>Negs</th>
         </tr>
         @foreach ($teams as $team)
-            <tr>
+            <tr style="{{ $team->group % 2 == 1 ? 'background-color: aliceblue' : '' }}">
                 <td>{{ $team->name }}</td>
+                <td>{{ $team->group }}</td>
                 <td>{{ $team->leaguePoints }}</td>
                 <td>{{ $team->pointsPerStarter }}</td>
                 <td>{{ $team->pointsConcededPerStarter }}</td>

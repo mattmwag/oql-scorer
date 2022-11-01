@@ -155,6 +155,7 @@ class TeamController extends Controller
         }
 
         $teams = $teams->sortBy([
+            ['group', 'asc'],
             ['leaguePoints', 'desc'],
             ['pointsPerStarter', 'desc'],
             ['pointsConcededPerStarter', 'asc'],
