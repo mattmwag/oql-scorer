@@ -37,7 +37,9 @@
 
                         <a class="btn btn-info" href="{{ route('fixtures.edit',$fixture->id) }}">Run Game</a>
 
+                        @if ($fixture->t1p1_id)
                         <a class="btn btn-primary" href="{{ route('fixtures.show',$fixture->id) }}">View Scores</a>
+                        @endif
 
 @csrf
                         @method('DELETE')

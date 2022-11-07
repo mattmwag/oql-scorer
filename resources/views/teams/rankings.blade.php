@@ -23,6 +23,8 @@
             <th>Name</th>
             <th>Group</th>
             <th>LeaguePoints</th>
+            <th>Total Points For</th>
+            <th>Total Points Against</th>
             <th>PointsPerStarter</th>
             <th>PointsConcededPerStarter</th>
             <th>CorrectBuzzes</th>
@@ -33,6 +35,8 @@
                 <td>{{ $team->name }}</td>
                 <td>{{ $team->group }}</td>
                 <td>{{ $team->leaguePoints }}</td>
+                <td>{{ $team->totalPointsFor }}</td>
+                <td>{{ $team->totalPointsAgainst }}</td>
                 <td>{{ $team->pointsPerStarter }}</td>
                 <td>{{ $team->pointsConcededPerStarter }}</td>
                 <td>{{ $team->correctBuzzes }}</td>

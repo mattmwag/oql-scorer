@@ -117,7 +117,9 @@ class TeamController extends Controller
             $f2 = Fixture::where('team_two_id', $team->id)->sum('t2result');
             $team->leaguePoints = $f1 + $f2;
             $t1 = Fixture::where('team_one_id', $team->id)->sum('team_one_score');
+            $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score');
             $t2 = Fixture::where('team_two_id', $team->id)->sum('team_two_score');
+            $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score');
             $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score');
             $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score');
             $cb = Fixture::where('team_one_id', $team->id)->sum('t1p1_score')
@@ -152,6 +154,8 @@ class TeamController extends Controller
                 ($t1a + $t2a) / ($t1c + $t2c) / 20        : 0;
             $team->correctBuzzes = $cb / 20;
             $team->negs = $negs / -10;
+            $team->totalPointsFor = $t1 + $t2;
+            $team->totalPointsAgainst = $t1a + $t2a;
         }
 
         $teams = $teams->sortBy([
