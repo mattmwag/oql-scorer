@@ -1,11 +1,8 @@
-@extends('fixtures.layout')
+@extends('layout')
 
 @section('content')
 <div class="row">
         <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>OQL Buzzer Quiz App</h2>
-            </div>
             <div class="pull-right">
                 <a class="btn btn-success" href="{{ route('fixtures.create') }}"> Generate Next Round Fixtures</a>
             </div>
@@ -35,9 +32,11 @@
                 <td>
                     <form action="{{ route('fixtures.destroy',$fixture->id) }}" method="POST">
 
+                        @if ($fixture->teamTwo->name != 'Bye')
                         <a class="btn btn-info" href="{{ route('fixtures.edit',$fixture->id) }}">Run Game</a>
+                        @endif
 
-                        @if ($fixture->t1p1_id)
+                        @if ($fixture->history)
                         <a class="btn btn-primary" href="{{ route('fixtures.show',$fixture->id) }}">View Scores</a>
                         @endif
 

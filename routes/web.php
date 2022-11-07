@@ -16,11 +16,10 @@ use App\Http\Controllers\FixtureController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [TeamController::class, 'index']);
 
-Route::get('teams/rankings', 'App\Http\Controllers\TeamController@rankings');
+Route::get('teams/rankings', 'App\Http\Controllers\TeamController@rankings')
+    ->name('rankings');
 
 Route::resource('teams', TeamController::class);
 

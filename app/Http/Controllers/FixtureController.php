@@ -102,6 +102,7 @@ class FixtureController extends Controller
         if (Player::find($fixture->t1p1_id)) {
             $t1p1 = Player::find($fixture->t1p1_id)->name;
             $t2p1 = Player::find($fixture->t2p1_id)->name;
+//            dd($fixture->team_one_score, $fixture->t1p1_score, $fixture->t1p2_score, $fixture->t1p3_score, $fixture->t1p4_score, $fixture->t1p1_negs, $fixture->t1p2_negs, $fixture->t1p3_negs, $fixture->t1p4_negs);
             $t1_total = $fixture->team_one_score
                 + $fixture->t1p1_score
                 + $fixture->t1p2_score

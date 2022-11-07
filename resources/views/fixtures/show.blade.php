@@ -1,4 +1,4 @@
-@extends('fixtures.layout')
+@extends('layout')
 
 @section('content')
     <div class="row">
@@ -28,7 +28,7 @@
                 <div>{{ $t1p1 }} ({{$fixture->teamOne()->first()->name}}) buzzed in for 20</div>
                 @break
                 @case("t2p1")
-                <div>{{ $t2p1 }} buzzed in for 20</div>
+                <div>{{ $t2p1 }} ({{$fixture->teamTwo()->first()->name}}) buzzed in for 20</div>
                 @break
             @endswitch
         @endif

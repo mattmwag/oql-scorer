@@ -116,12 +116,42 @@ class TeamController extends Controller
             $f1 = Fixture::where('team_one_id', $team->id)->sum('t1result');
             $f2 = Fixture::where('team_two_id', $team->id)->sum('t2result');
             $team->leaguePoints = $f1 + $f2;
-            $t1 = Fixture::where('team_one_id', $team->id)->sum('team_one_score');
-            $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score');
-            $t2 = Fixture::where('team_two_id', $team->id)->sum('team_two_score');
-            $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score');
-            $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score');
-            $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score');
+            $t1 = Fixture::where('team_one_id', $team->id)->sum('team_one_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p1_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p2_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p3_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p4_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p1_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p2_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p3_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t1p4_negs');
+            $t1a = Fixture::where('team_one_id', $team->id)->sum('team_two_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p1_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p2_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p3_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p4_score')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p1_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p2_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p3_negs')
+                + Fixture::where('team_one_id', $team->id)->sum('t2p4_negs');
+            $t2 = Fixture::where('team_two_id', $team->id)->sum('team_two_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p1_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p2_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p3_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p4_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p1_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p2_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p3_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t2p4_negs');
+            $t2a = Fixture::where('team_two_id', $team->id)->sum('team_one_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p1_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p2_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p3_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p4_score')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p1_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p2_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p3_negs')
+                + Fixture::where('team_two_id', $team->id)->sum('t1p4_negs');
             $cb = Fixture::where('team_one_id', $team->id)->sum('t1p1_score')
                 + Fixture::where('team_one_id', $team->id)->sum('t1p2_score')
                 + Fixture::where('team_one_id', $team->id)->sum('t1p3_score')

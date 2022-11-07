@@ -1,4 +1,4 @@
-@extends('teams.layout')
+@extends('layout')
 
 @section('content')
     <div class="row">
